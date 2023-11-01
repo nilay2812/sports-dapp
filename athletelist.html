@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Athlete Details</h2>
+<ul id="athleteList"></ul>
+
+<script>
+  async function displayAthleteDetails() {
+    const athleteCount = await window.contract.methods.athleteCount().call();
+
+    const athleteList = document.getElementById("athleteList");
+    athleteList.innerHTML = ""; // Clear the list
+
+    for (let i = 1; i <= athleteCount; i++) {
+      const athlete = await window.contract.methods.athletes(i).call();
+      const listItem = document.createElement("li");
+      listItem.textContent = `Name: ${athlete.name}, Age: ${athlete.age}, Discipline: ${athlete.discipline}, Records: ${athlete.performanceRecords}`;
+      athleteList.appendChild(listItem);
+    }
+  }
+  displayAthleteDetails();
+</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sports Department Dapp</title>
+    <style>
+      .section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+    </style>
+  </head>
+  <body>
+   <center> <h1>Sports Department Dapp</h1></center>
+   <hr>
+   <hr>
+
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!-- web3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.4.0/web3.min.js"></script>  
+
+    
+
+<script type="text/javascript">
+      async function loadweb3(){
+	if(window.ethereum){
+		window.web3=new Web3(window.ethereum);
+		window.ethereum.enable(); 
+	} 
+}        
+// Create a provider connected to your Ethereum node
+
+// Your contract address and ABI
+
+// Create a contract instance
+
+async function loadContract(){
+	//ABI & address of owner who deployed it on metamask network in RemixIDE
+  var ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_age",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_discipline",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_records",
+				"type": "string"
+			}
+		],
+		"name": "addAthlete",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_itemName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_purchaseDate",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "addEquipment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_location",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_participants",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_results",
+				"type": "string"
+			}
+		],
+		"name": "addEvent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "athleteCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "athletes",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "age",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "discipline",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "performanceRecords",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "equipmentCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "equipmentInventory",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "itemName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "purchaseDate",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "quantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "eventCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "events",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "participants",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "results",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];///Copy paste your Smart Contract ABI
+  var Address = '0xA2aD5f4c1aAf3747Bf62F3c87DdC706B43D26ecd'
+	return await new window.web3.eth.Contract( ABI, Address); 
+} 
+// The rest of your code...
+
+async function load(){
+	await loadweb3();
+ window.contract = await loadContract();
+}
+
+load();  
+</script>
+<div class="section">
+  <div>
+<!-- HTML code for displaying counts -->
+<h2>Athlete Count: <span id="athleteCount">Loading...</span></h2>
+<button type="button" onclick="getAthleteCount();">Show Athlete Count</button>
+  </div>
+  <div>
+<h2>Equipment Count: <span id="equipmentCount">Loading...</span></h2>
+<button type="button" onclick="getEquipmentCount();">Show Equipment Count</button>
+</div>
+<div>
+<h2>Event Count: <span id="eventCount">Loading...</span></h2>
+<button type="button" onclick="getEventCount();">Show Event Count</button>
+  </div>
+</div>
+<br>
+<hr>
+<hr>
+<div class="section">
+<div>
+<h2>Add Athlete</h2>
+<form id="addAthleteForm">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required><br>
+  <label for="age">Age:</label>
+  <input type="number" id="age" name="age" required><br>
+  <label for="discipline">Discipline:</label>
+  <input type="text" id="discipline" name="discipline" required><br>
+  <label for="records">Performance Records:</label>
+  <input type="text" id="records" name="records" required><br>
+  <button type="button" onclick="addAthlete();">Add Athlete</button>
+</form>
+</div>
+<!-- HTML code for adding equipment -->
+<div>
+<h2>Add Equipment</h2>
+<form id="addEquipmentForm">
+  <label for="itemName">Item Name:</label>
+  <input type="text" id="itemName" name="itemName" required><br>
+  <label for="purchaseDate">Purchase Date:</label>
+  <input type="text" id="purchaseDate" name="purchaseDate" required><br>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" required><br>
+  <label for="price">Price:</label>
+  <input type="number" id="price" name="price" required><br>
+  <button type="button" onclick="addEquipment();">Add Equipment</button>
+</form>
+</div>
+<!-- HTML code for adding an event -->
+<div>
+<h2>Add Event</h2>
+<form id="addEventForm">
+  <label for="date">Date:</label>
+  <input type="text" id="date" name="date" required><br>
+  <label for="location">Location:</label>
+  <input type="text" id="location" name="location" required><br>
+  <label for="participants">Participants:</label>
+  <input type="text" id="participants" name="participants" required><br>
+  <label for="results">Results:</label>
+  <input type="text" id="results" name="results" required><br>
+  <button type="button" onclick="addEvent();">Add Event</button>
+</form>
+</div>
+
+
+<script>
+  // JavaScript function to call the smart contract method to get athlete count
+  async function getAthleteCount() {
+    const athleteCount = await window.contract.methods.athleteCount().call();
+    document.getElementById("athleteCount").textContent = athleteCount;
+  }
+
+  // JavaScript function to call the smart contract method to get event count
+  async function getEventCount() {
+    const eventCount = await window.contract.methods.eventCount().call();
+    document.getElementById("eventCount").textContent = eventCount;
+  }
+
+  // JavaScript function to call the smart contract method to get equipment count
+  async function getEquipmentCount() {
+    const equipmentCount = await window.contract.methods.equipmentCount().call();
+    document.getElementById("equipmentCount").textContent = equipmentCount;
+  }
+
+  // JavaScript function to call the smart contract method to add an athlete
+  async function addAthlete() {
+    const name = document.getElementById("name").value;
+    const age = document.getElementById("age").value;
+    const discipline = document.getElementById("discipline").value;
+    const records = document.getElementById("records").value;
+    await window.contract.methods.addAthlete(name, age, discipline, records).send({ from: ethereum.selectedAddress });
+    getAthleteCount(); // Refresh athlete count
+  }
+
+  // JavaScript function to call the smart contract method to add equipment
+  async function addEquipment() {
+    const itemName = document.getElementById("itemName").value;
+    const purchaseDate = document.getElementById("purchaseDate").value;
+    const quantity = document.getElementById("quantity").value;
+    const price = document.getElementById("price").value;
+    await window.contract.methods.addEquipment(itemName, purchaseDate, quantity, price).send({ from: ethereum.selectedAddress });
+    getEquipmentCount(); // Refresh equipment count
+  }
+
+  // JavaScript function to call the smart contract method to add an event
+  async function addEvent() {
+    const date = document.getElementById("date").value;
+    const location = document.getElementById("location").value;
+    const participants = document.getElementById("participants").value;
+    const results = document.getElementById("results").value;
+    await window.contract.methods.addEvent(date, location, participants, results).send({ from: ethereum.selectedAddress });
+    getEventCount(); // Refresh event count
+  }
+</script>
+</div>
+<br>
+<hr>
+<hr>
+<div class="section">
+<div>  
+  <!-- HTML code for displaying athlete details -->
+  <h2>Athlete Details</h2>
+  <ul id="athleteList"></ul>
+  </div>
+
+  <div>
+    <h2>Equipment Details</h2>
+    <ul id="equipmentList"></ul>
+  </div>
+  <div>
+    <h2>Event Details</h2>
+    <ul id="eventList"></ul>
+  </div>
+  
+  <!-- HTML code for displaying equipment details -->
+ 
+  
+  <!-- JavaScript function to retrieve and display athlete details -->
+  <script>
+    async function displayAthleteDetails() {
+      const athleteCount = await window.contract.methods.athleteCount().call();
+  
+      const athleteList = document.getElementById("athleteList");
+      athleteList.innerHTML = ""; // Clear the list
+  
+      for (let i = 1; i <= athleteCount; i++) {
+        const athlete = await window.contract.methods.athletes(i).call();
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>Name:</strong> ${athlete.name}<br>
+                          <strong>Age:</strong> ${athlete.age}<br>
+                          <strong>Discipline:</strong> ${athlete.discipline}<br>
+                          <strong>Records:</strong> ${athlete.performanceRecords}`;
+        athleteList.appendChild(listItem);
+      }
+    }
+  
+    async function displayEventDetails() {
+        const eventCount = await window.contract.methods.eventCount().call();
+        const eventList = document.getElementById("eventList");
+        eventList.innerHTML = ""; // Clear the list
+        for (let i = 1; i <= eventCount; i++) {
+          const event = await window.contract.methods.events(i).call();
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<strong>Date:</strong> ${event.date}<br>
+                          <strong>Location:</strong> ${event.location}<br>
+                          <strong>Participants:</strong> ${event.participants}<br>
+                          <strong>Results:</strong> ${event.results}`;
+          eventList.appendChild(listItem);
+        }
+      }
+  
+      async function displayEquipmentDetails() {
+        const equipmentCount = await window.contract.methods.equipmentCount().call();
+        const equipmentList = document.getElementById("equipmentList");
+        equipmentList.innerHTML = ""; // Clear the list
+        for (let i = 1; i <= equipmentCount; i++) {
+          const equipment = await window.contract.methods.equipmentInventory(i).call();
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<strong>Item Name:</strong> ${equipment.itemName}<br>
+                          <strong>Purchase Date:</strong> ${equipment.purchaseDate}<br>
+                          <strong>Quantity:</strong> ${equipment.quantity}<br>
+                          <strong>Price:</strong> ${equipment.price}`;
+          equipmentList.appendChild(listItem);
+        }
+      }
+  
+      // Call these functions to display event and equipment details when the page loads or as needed
+      displayAthleteDetails();
+      displayEventDetails();
+      displayEquipmentDetails();
+  
+    // Call this function to display athlete details when the page loads or as needed
+    
+  </script>
+  
+  </div>
+
+  </body>
+</html>
